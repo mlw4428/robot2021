@@ -3,10 +3,102 @@
 # License: MIT License https://opensource.org/licenses/MIT
 import time
 # Import the Robot.py file (must be in the same directory as this file!).
-import Robot
+import robolib.Robot
+import robolib.lineTrackFunc
+from os import system, name 
+from time import sleep
+
+Robot = robolib.Robot
+LineTrac = robolib.lineTrackFunc
+isInit = False
+
+def clear(): 
+  
+    # for windows 
+    if name == 'nt': 
+        _ = system('cls') 
+  
+    # for mac and linux(here, os.name is 'posix') 
+    else: 
+        _ = system('clear') 
+
+def isOnLine():
+    print ''
+
+def turnLeft():
+    print ''
+
+def turnRight():
+    print ''
+
+def driveForward():
+    print ''
+
+def driveReverse():
+        print ''
+
+def driveStop():
+    print ''
+    #Robot.Robot.stop
+
+def initRobit():
+    print "Matt Wilson's Ro-Bit version 1.0 (c) 2021 Matt Wilson"
+    print "This software is licensed under public domain except for code licensed under GPL which shall remain under its own license"
+    print "Initializing Ro-bit"
+
+# #This is the follow the line mode, which will drive the robot forward/backward and make turns following a line using the light sensors on the front of chassis 
+def followTheLineMode():
+    print ''
+# Main program loop
+def main():
+    if (isInit == False): 
+        print "" 
+        #initRobit()
+    #Robot.Robot.stop
+    menu = None
+    while menu is None:
+        try:
+            print "**************************"
+            print "*         RO-BIT         *"
+            print "* Created by Matt Wilson *  "
+            print "**************************"
+            print ""
+            print "Select a running mode"
+            print "1) Follow the line"
+            print "2) Not Implemented"
+            print ""
+            print ""
+            print "Entering 0 exits the program"
+            dirty_input = raw_input("Please enter your selection: ")
+            menu = int(dirty_input)
+        except ValueError:
+            clear()
+            print("What you entered is not a valid selection, please try again and enter an integer this time.")      
+            continue
+        else:
+            #age was successfully parsed!
+            #we're ready to exit the loop.
+            break
+    if menu == 1:
+        print('Loading "Follow the Line" mode')
+    elif menu == 0:
+        exit
+    else:
+        clear()
+        print("What you entered is not a valid menu selection, please try again.")
+        main()
+ 
+ 
+ 
+ # Start program and call main
+if __name__ == "__main__":
+    print "Ro-bit starting..."
+    clear()
+    main()
 
 
 
+    '''
 # Set the trim offset for each motor (left and right).  This is a value that
 # will offset the speed of movement of each motor in order to make them both
 # move at the same desired speed.  Because there's no feedback the robot doesn't
@@ -63,3 +155,4 @@ robot.right(200, 0.5)
 robot.backward(150, 1.0)
 
 # That's it!  Note that on exit the robot will automatically stop moving.
+    '''
