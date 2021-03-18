@@ -1,12 +1,10 @@
 #Robit
-import time
-import robolib.Robot
-import robolib.lineTrackFunc
+
 from os import system, name 
 from time import sleep
+import LineGame
 
-Robot = robolib.Robot
-LineTrac = robolib.lineTrackFunc
+LineGame = LineGame
 isInit = False
 
 def clear():  #Clears screen for Windows or MacOS/Linux - other OSes will try to use clear command and may not work...you'll need to deal with that somehow
@@ -18,24 +16,7 @@ def clear():  #Clears screen for Windows or MacOS/Linux - other OSes will try to
     else: 
         _ = system('clear') 
 
-def isOnLine(): #Check to make sure we are on the line
-    print ''
 
-def turnLeft(): #handle turnleft calls to library
-    print ''
-
-def turnRight(): #handle turn right calls to library
-    print ''
-
-def driveForward(): #Drives us forward
-    print ''
-
-def driveReverse(): #Drives us backward
-        print ''
-
-def driveStop():
-    print ''
-    #Robot.Robot.stop
 
 def initRobit():
     print "Matt Wilson's Ro-Bit version 1.0 (c) 2021 Matt Wilson"
@@ -76,7 +57,7 @@ def main():
             #we're ready to exit the loop.
             break
     if menu == 1:
-        print('Loading "Follow the Line" mode')
+        LineGame.LineGame()
     elif menu == 0:
         exit
     else:
