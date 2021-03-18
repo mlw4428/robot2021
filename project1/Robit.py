@@ -3,8 +3,9 @@
 from os import system, name 
 from time import sleep
 import LineGame
-
-LineGame = LineGame
+import logging as robitLog
+from datetime import datetime
+robitLog.basicConfig(filename=datetime.now().strftime('Robit_%H_%M_%d_%m_%Y.log'), level=robitLog.INFO) #Basic debug logging
 isInit = False
 
 def clear():  #Clears screen for Windows or MacOS/Linux - other OSes will try to use clear command and may not work...you'll need to deal with that somehow
@@ -19,33 +20,33 @@ def clear():  #Clears screen for Windows or MacOS/Linux - other OSes will try to
 
 
 def initRobit():
-    print "Matt Wilson's Ro-Bit version 1.0 (c) 2021 Matt Wilson"
-    print "This software is licensed under public domain except for code licensed under GPL which shall remain under its own license"
-    print "Initializing Ro-bit"
+    print("Matt Wilson's Ro-Bit version 1.0 (c) 2021 Matt Wilson")
+    print("This software is licensed under public domain except for code licensed under GPL which shall remain under its own license")
+    print("Initializing Ro-bit")
 
 # #This is the follow the line mode, which will drive the robot forward/backward and make turns following a line using the light sensors on the front of chassis 
 def followTheLineMode():
-    print ''
+    print(" ")
 # Main program loop
 def main():
     if (isInit == False): 
-        print "" 
+        print ("") 
         #initRobit()
     #Robot.Robot.stop
     menu = None
     while menu is None:
         try:
-            print "**************************"
-            print "*         RO-BIT         *"
-            print "* Created by Matt Wilson *  "
-            print "**************************"
-            print ""
-            print "Select a running mode"
-            print "1) Follow the line"
-            print "2) Not Implemented"
-            print ""
-            print ""
-            print "Entering 0 exits the program"
+            print("**************************")
+            print("*         RO-BIT         *")
+            print("* Created by Matt Wilson *  ")
+            print("**************************")
+            print (" ")
+            print ("Select a running mode")
+            print ("1) Follow the line")
+            print ("2) Not Implemented")
+            print ("")
+            print ("")
+            print ("Entering 0 exits the program")
             dirty_input = raw_input("Please enter your selection: ")
             menu = int(dirty_input)
         except ValueError:
@@ -57,6 +58,7 @@ def main():
             #we're ready to exit the loop.
             break
     if menu == 1:
+        LineGame = LineGame
         LineGame.LineGame()
     elif menu == 0:
         exit
@@ -69,7 +71,7 @@ def main():
  
  # Start program and call main
 if __name__ == "__main__":
-    print "Ro-bit starting..."
+    print ("Ro-bit starting...")
     clear()
     main()
 

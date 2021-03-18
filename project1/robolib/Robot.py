@@ -67,7 +67,7 @@ class Robot(object):
         # Set motor speed and move both forward.
         self._left_speed(speed)
         self._right_speed(speed)
-        self._left.run(Adafruit_MotorHAT.FORWARD)
+        self._left.run(Adafruit_MotorHAT.BACKWARD)
         self._right.run(Adafruit_MotorHAT.FORWARD)
         # If an amount of time is specified, move for that time and then stop.
         if seconds is not None:
@@ -82,7 +82,7 @@ class Robot(object):
         # Set motor speed and move both backward.
         self._left_speed(speed)
         self._right_speed(speed)
-        self._left.run(Adafruit_MotorHAT.BACKWARD)
+        self._left.run(Adafruit_MotorHAT.FORWARD)
         self._right.run(Adafruit_MotorHAT.BACKWARD)
         # If an amount of time is specified, move for that time and then stop.
         if seconds is not None:
@@ -97,7 +97,7 @@ class Robot(object):
         # Set motor speed and move both forward.
         self._left_speed(speed)
         self._right_speed(speed)
-        self._left.run(Adafruit_MotorHAT.FORWARD)
+        self._left.run(Adafruit_MotorHAT.BACKWARD)
         self._right.run(Adafruit_MotorHAT.BACKWARD)
         # If an amount of time is specified, move for that time and then stop.
         if seconds is not None:
@@ -112,7 +112,7 @@ class Robot(object):
         # Set motor speed and move both forward.
         self._left_speed(speed)
         self._right_speed(speed)
-        self._left.run(Adafruit_MotorHAT.BACKWARD)
+        self._left.run(Adafruit_MotorHAT.FORWARD)
         self._right.run(Adafruit_MotorHAT.FORWARD)
         # If an amount of time is specified, move for that time and then stop.
         if seconds is not None:
