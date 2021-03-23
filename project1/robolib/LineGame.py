@@ -1,18 +1,9 @@
 import time
+import sys
 import robolib
 import robolib.Robot as Robot
-import sys
-from sys import stdout
 import RPi.GPIO as myLineSensor
-from datetime import datetime
-import logging as sessionLog
-
-
-sessionLogFilename = datetime.now().strftime('LineGame_%H_%M_%d_%m_%Y.log')
-sessionLog.basicConfig(filename=sessionLogFilename,level=sessionLog.INFO,format=("ROBITLOG:" + '%(asctime)s - %(name)s - %(message)s'))
-#sessionRemoteLogger.setLevel(level=sessionLog.INFO)
-#sessionRemoteLoggerIP = '127.0.0.1'
-#sessionRemoteLoggerPort = 5124
+import robolib.SessionLogger as sessionLog
 
 
 #Robit wheel speed
@@ -30,6 +21,7 @@ _RIGHTSENSORGPIOVALUE = 18 # maps to 24 on HAT
 myLineSensor.setmode(myLineSensor.BOARD)
 myLineSensor.setup(_LEFTSENSORGPIOVALUE, myLineSensor.IN)
 myLineSensor.setup(_RIGHTSENSORGPIOVALUE, myLineSensor.IN)
+
 
 sessionLog.info("****** DEFAULT VALUES ******")
 sessionLog.info("MOTOR CONFIG")
@@ -53,17 +45,21 @@ def InitTest(testSpeed = 50, testTime = .5): #tests wheels/calibration
     sessionLog.debug('*** Motor Testing Starting ***')
     sessionLog.debug('TEST MOTOR SPEED: ' + str(testSpeed))
     sessionLog.debug('TEST MOTOR RUNTIME: ' + str(testTime))
+    sessionLog.debug('MOVE FORWARD')
     myRobot.forward(testSpeed,testTime)
+    sessionLog.debug('MOVE BACKWARD')
     myRobot.backward(testSpeed,testTime)
+    sessionLog.debug('TURN LEFT')
     myRobot.left(testSpeed,testTime)
+    sessionLog.debug('TURN RIGHT')
     myRobot.right(testSpeed,testTime)
 def checkSensorLeft(): 
     myleftsensorvalue = myLineSensor.input(_LEFTSENSORGPIOVALUE)
-    sessionLog.info("LEFT SENSOR VALUE: " + str(myleftsensorvalue))
+    sessionLog.debug("LEFT SENSOR VALUE: " + str(myleftsensorvalue))
     return myleftsensorvalue
 def checkSensorRight():
     myrightsensorvalue = myLineSensor.input(_RIGHTSENSORGPIOVALUE)
-    sessionLog.info("MY RIGHT SENSOR VALUE: " + str(myrightsensorvalue))
+    sessionLog.debug("MY RIGHT SENSOR VALUE: " + str(myrightsensorvalue))
     return myrightsensorvalue
     print("")
 def sensorDriveValue(followLineMode = True): 
@@ -86,14 +82,14 @@ def sensorDriveValue(followLineMode = True):
     elif checkSensorLeft() == 0 and checkSensorRight() == 1: # Line is seen on the right sensor, but not the left
             drivevalue = 1
     elif checkSensorLeft() == 1 and checkSensorRight() == 1: # Line is seen on both sides of the sensor
-                drivevalue = 0
+                drivevalue = 1
     elif checkSensorLeft() == 0 and checkSensorRight() == 0: #Line isn't seen anywhere
-            drivevalue = 1 # Just turn left and we'll just keep turning until we get both sensors on OR off the tracking or we spin in place safely
+            drivevalue = 0 # Just turn left and we'll just keep turning until we get both sensors on OR off the tracking or we spin in place safely
     else: #If we get here our logic up above didn't cover something, so stop the bot
             drivevalue = -1
-    if followLineMode == True and drivevalue == 1:
+    if followLineMode == False and drivevalue == 1:
         drivevalue = 2
-    if followLineMode == True and drivevalue == 2:
+    if followLineMode == False and drivevalue == 2:
         drivevalue = 1
     return drivevalue
 def start_game(doTest = False, justDoStop = False, doRemoteLogging=False, remoteLogIP="", remoteLogPort=0, DRIVE_SPEED = DRIVE_NORM_SPEED, DRIVE_TURN = DRIVE_TURN_SPEED, driveSession = 86400):
@@ -120,7 +116,6 @@ def start_game(doTest = False, justDoStop = False, doRemoteLogging=False, remote
        # sessionRemoteLogger = sessionLog.handlers.SysLogHandler(address=(sessionRemoteLoggerIP,sessionRemoteLoggerPort))
        # session.Logging.addHandler(sessionRemoteLogger)'''
     if (doTest == True): 
-        sessionLog.info("Doing preliminary motor testing")
         InitTest()
     print("** DRIVING ** - ")
     startGameTime = time.time()
@@ -133,15 +128,12 @@ def start_game(doTest = False, justDoStop = False, doRemoteLogging=False, remote
         if checkThisDriveValue == 0: 
             sessionLog.info("FORWARD @ " + str(DRIVE_SPEED) + "FOR " + str(DRIVE_INTERVAL))
             myRobot.forward(DRIVE_SPEED,DRIVE_INTERVAL)
-            eBrake()
         elif checkThisDriveValue == 1:
             sessionLog.info("TURN LEFT @ " + str(DRIVE_TURN) + "FOR " + str(DRIVE_INTERVAL))
             myRobot.left(DRIVE_TURN, DRIVE_INTERVAL)
-            eBrake()
         elif checkThisDriveValue == 2:
             sessionLog.info("TURN RIGHT @ " + str(DRIVE_TURN) + "FOR " + str(DRIVE_INTERVAL))
             myRobot.right(DRIVE_TURN, DRIVE_INTERVAL)
-            eBrake()
         elif checkThisDriveValue == -1:
             eBrake()
         else: # If we get here something is wrong
@@ -149,4 +141,4 @@ def start_game(doTest = False, justDoStop = False, doRemoteLogging=False, remote
             eBrake()
             sys.exit(1)
     sys.exit(0)
-start_game(doTest=False,justDoStop=True)
+#start_game(doTest=True,justDoStop=False,driveSession=10)
