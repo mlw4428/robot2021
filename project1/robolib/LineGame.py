@@ -79,14 +79,18 @@ def sensorDriveValue(followLineMode = True):
     elif checkSensorLeft() == 1 and checkSensorRight() == 0: # Line is seen on the right sensor, but not the left
             sessionLog.debug("LEFT SENSOR OFF, RIGHT SENSOR ON")
             drivevalue = 1
-    elif checkSensorLeft() == 0 and checkSensorRight() == 0: # Line is seen on both sides of the sensor
-                sessionLog.debug("OFF THE LINE")
-                drivevalue = -10
-    elif checkSensorLeft() == 1 and checkSensorRight() == 1: #Line isn't seen anywhere
+    elif checkSensorLeft() == 0 and checkSensorRight() == 0: # Line isn't seen anywhere
+                sessionLog.debug("OFF THE LINE") 
+                if followLineMode == True 
+                    drivevalue = -10
+                else 
+                    drivevalue = 0
+    elif checkSensorLeft() == 1 and checkSensorRight() == 1: # Both sensors are on the line
             sessionLog.debug("ON THE LINE")
-            drivevalue = 0 # Just turn left and we'll just keep turning until we get both sensors on OR off the tracking or we spin in place safely
-    else: #If we get here our logic up above didn't cover something, so stop the bot
-            drivevalue = -1
+                if followLineMode == True 
+                    drivevalue = 0
+                else 
+                    drivevalue = -10
     if followLineMode == False and drivevalue == 1:
         drivevalue = 2
     if followLineMode == False and drivevalue == 2:
