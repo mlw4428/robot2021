@@ -3,7 +3,7 @@ import sys
 import Robot as Robot
 import RPi.GPIO as myLineSensor
 import SessionLogger as sessionLog
-
+# **** SOME GLOBAL VALUES
 
 #Robit wheel speed
 DRIVE_LEFT_TRIM   = 0
@@ -22,6 +22,12 @@ myLineSensor.setup(_LEFTSENSORGPIOVALUE, myLineSensor.IN)
 myLineSensor.setup(_RIGHTSENSORGPIOVALUE, myLineSensor.IN)
 
 
+myRobot = Robot.Robot(left_trim=DRIVE_LEFT_TRIM,right_trim=DRIVE_RIGHT_TRIM,left_id=1,right_id=4)
+
+# **** END GLOBAL VALUES
+
+
+# **** INIT LOGGING ****
 sessionLog.info("****** DEFAULT VALUES ******")
 sessionLog.info("MOTOR CONFIG")
 sessionLog.info("------------")
@@ -32,11 +38,13 @@ sessionLog.info("-------------")
 sessionLog.info ("LEFT SENSOR IS MAPPED TO PIN: "+ str(_LEFTSENSORGPIOVALUE))
 sessionLog.info ("RIGHT SENSOR IS MAPPED TO PIN : "+ str(_RIGHTSENSORGPIOVALUE))
 sessionLog.info("")
-myRobot = Robot.Robot(left_trim=DRIVE_LEFT_TRIM,right_trim=DRIVE_RIGHT_TRIM,left_id=1,right_id=4)
+# **** END INIT LOGGING ****
+
+
 
 class LineGame:
+####    
     """ Class that plays the Line Game - following a black line on a white board """
-    
 def eBrake(): #for future use
       sessionLog.error(" ** !!! EMERGENCY BRAKE HAS BEEN DEPLOYED !!! **")
       myRobot.stop()
@@ -80,24 +88,24 @@ def sensorDriveValue(followLineMode = True):
             sessionLog.debug("LEFT SENSOR OFF, RIGHT SENSOR ON")
             drivevalue = 1
     elif checkSensorLeft() == 0 and checkSensorRight() == 0: # Line isn't seen anywhere
-                sessionLog.debug("OFF THE LINE") 
-                if followLineMode == True 
-                    drivevalue = -10
-                else 
-                    drivevalue = 0
+        sessionLog.debug("OFF THE LINE") 
+        if followLineMode == True: 
+            drivevalue = -10
+        else: 
+            drivevalue = 0
     elif checkSensorLeft() == 1 and checkSensorRight() == 1: # Both sensors are on the line
-            sessionLog.debug("ON THE LINE")
-                if followLineMode == True 
-                    drivevalue = 0
-                else 
-                    drivevalue = -10
+        sessionLog.debug("ON THE LINE")
+        if followLineMode == True:
+            drivevalue = 0
+        else:
+            drivevalue = -10
     if followLineMode == False and drivevalue == 1:
         drivevalue = 2
     if followLineMode == False and drivevalue == 2:
         drivevalue = 1
     return drivevalue
 def doSearch(lastValue = 0, sessionTime=-1):
-    if sessionTime = -1:
+    if sessionTime == -1:
         raise Exception("Search called without sessionTime being passed. Exiting as punishment.")
         sessionLog.error("doSearch() called without sessionTime. Exiting program.")
         sys.exit()
@@ -108,8 +116,8 @@ def doSearch(lastValue = 0, sessionTime=-1):
     lookTimeAdd = .5
     while keepLooking == True:
         if (time.time() - startGameTime > driveSession): #keep us from deadlocking here
-                sessionLog.info("*** TRACK SEARCH ENDED DUE TO DRIVE SESSION ENDING ***")
-                 break
+            sessionLog.info("*** TRACK SEARCH ENDED DUE TO DRIVE SESSION ENDING ***")
+            break
         if lastSensorValue == 1: #if last sensor value was to turn left, turn right
             sessionLog.info("searching right...")
             myRobot.right(lookSpeed, lookTime)
@@ -157,10 +165,6 @@ def start_game(doTest = False, justDoStop = False, doRemoteLogging=False, remote
     else: 
         driveSession == 86400
     sessionLog.info('start_game - starting game')
-   #if doRemoteLogging: #if we're doing remote logging
-        #if len(remoteLogIP) > 0: sessionRemoteLoggerIP 
-       # sessionRemoteLogger = sessionLog.handlers.SysLogHandler(address=(sessionRemoteLoggerIP,sessionRemoteLoggerPort))
-       # session.Logging.addHandler(sessionRemoteLogger)'''
     if (doTest == True): 
         InitTest()
     print("** DRIVING ** - ")
@@ -191,4 +195,4 @@ def start_game(doTest = False, justDoStop = False, doRemoteLogging=False, remote
             sys.exit(1)
         lastSensorValue = checkThisDriveValue
     sys.exit(0)
-start_game(doTest=False,justDoStop=False,driveSession=60)
+start_game(doTest=False,justDoStop=True,driveSession=60)
