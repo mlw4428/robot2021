@@ -2,6 +2,7 @@ from datetime import datetime
 import sys
 from sys import stdout
 import logging, logging.handlers
+import os,os.path
 
 logName = "ROBITLOG: "
 sessionLogFilename = datetime.now().strftime('robit_' + '%m_%d_%Y@%H_%M_.log')
@@ -33,3 +34,5 @@ def warning(msg):
     sessionLog.warning(msg)
 def error(msg):
     sessionLog.error(msg)
+def exception(msg):
+    sessionLog.exception(msg)

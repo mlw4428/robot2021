@@ -43,7 +43,7 @@ def main():
             print ("Select a running mode")
             print ("1) Follow the line - no init")
             print ("2) Not Implemented")
-            print ("")
+            print ("")1
             print ("")
             print ("Entering 0 exits the program")
             dirty_input = raw_input()
